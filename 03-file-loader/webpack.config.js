@@ -12,6 +12,15 @@ module.exports = {
   module: { // 用于配置loader
     rules : [
       {
+        test: /.js$/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
+      },
+      {
         test: /.css$/, // 匹配文件规则
         use: [ // 使用什么loader,这里有个注意点: 如果有多个loader需要执行,写在后面的loader会先被加载执行
           'style-loader',
@@ -20,7 +29,14 @@ module.exports = {
       },
       {
         test: /.jpg$/,
-        use: ['file-loader']
+        // use: ['file-loader']
+        // use: ['url-loader']
+        use: {
+          loader: 'url-loader',
+          options: {
+            limit: 10*1024 // 10 KB,当资源超过10kb,使用file-loader加载;以下则使用url-loader;需要同时安装两个loader
+          }
+        }
       }
     ]
   }
